@@ -1,0 +1,44 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" 
+                access="global" controller="CloneOpportunityController">
+    
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="oldOpp" type="Opportunity"/>
+    <aura:attribute name="opptyStageNames" type="String[]" default="Draft" />
+    <aura:attribute name="isOpen" type="boolean" default="true"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-m-around_xx-large">
+        <aura:if isTrue="{!v.isOpen}">
+            <lightning:buttonIcon iconName="utility:close"
+                                  onclick="{! c.closeModel }"
+                                  alternativeText="close"
+                                  variant="bare-inverse"
+                                  class="slds-modal__close"/>
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Clone the Opportunity</h2>
+            <!--###### MODAL BOX BODY Part Start######-->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <ui:inputText value="{!v.oldOpp.Name}"  label="Oppty Name" aura:id="Name"/>
+                <ui:inputNumber label="Amount" value="{!v.oldOpp.Amount}"  />
+                <ui:inputSelect value="{!v.oldOpp.Stage}"  label="Oppty Stage" aura:id="Stage" >
+                    <aura:iteration items="{!v.opptyStageNames}" var="stageName">
+                        <option value="{!stageName}">{!stageName}</option>
+                    </aura:iteration>
+                </ui:inputSelect>
+                <ui:inputNumber value="{!v.oldOpp.ExpectedRevenue}"  label="Expected Revenue" aura:id="ExpectedRevenue"/>
+                <ui:inputText value="{!v.oldOpp.NextStep}"  label="Next Step" aura:id="NextStep"/>
+                <ui:inputDate value="{!v.oldOpp.CloseDate}" displayDatePicker="true" label="Close Date" aura:id="dateField" format="DD/MM/YYYY"/>
+            </div>
+            <!--###### MODAL BOX FOOTER Part Start ######-->
+            <!--<footer class="slds-modal__footer">-->
+            <lightning:button variant="neutral" 
+                              label="Cancel"
+                              title="Cancel"
+                              onclick="{!c.onCancel}"/>
+            <lightning:button variant="brand" 
+                              label="Save"
+                              title="Save"
+                              onclick="{!c.onSave}"/>
+        </aura:if>
+    </div>
+</aura:component>
